@@ -5,10 +5,12 @@
 
 <generatorConfiguration>
 
+    <properties resource="${generator.properties.file}"/>
+
     <context id="H2Context" targetRuntime="MyBatis3" defaultModelType="flat">
 
-        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
 
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
@@ -16,32 +18,33 @@
         </commentGenerator>
 
         <!-- CONFIGURAZIONE AGGIORNATA PER H2 SU FILE -->
-        <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:file:./data/sito_psiche;MODE=MySQL;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE"
-                        userId="sa"
-                        password="">
-            <property name="nullCatalogMeansCurrent" value="true" />
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaModelGenerator targetPackage="comboDev.arsdiapason.mybatis.model" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="comboDev.arsdiapason.mybatis.mapper" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="comboDev.arsdiapason.mybatis.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="%">
-            <!-- Impostato su 'JDBC' o 'IDENTITY' per funzionare correttamente con H2 in modalità MySQL -->
-            <generatedKey column="id" sqlStatement="JDBC" identity="true" />
-            <columnOverride column="test_finito" javaType="java.lang.Boolean" jdbcType="BIT" />
-            <columnOverride column="active" javaType="java.lang.Boolean" jdbcType="BIT" />
-            <columnOverride column="UNSIGNED_BIGINT_FIELD" javaType="java.lang.Object" jdbcType="LONG" />
-            <columnOverride column="data_ins" isGeneratedAlways="True" />
-            <columnOverride column="data_mod" isGeneratedAlways="True" />
-            <ignoreColumn column="data_ins" />
-            <ignoreColumn column="data_mod" />
+        <table tableName="%" schema="${spring.datasource.schema}">
+            <generatedKey column="id" sqlStatement="${spring.datasource.generatedKeySql}"
+                          identity="${spring.datasource.isIdentity}"/>
+            <columnOverride column="test_finito" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <columnOverride column="active" javaType="java.lang.Boolean" jdbcType="BIT"/>
+            <columnOverride column="UNSIGNED_BIGINT_FIELD" javaType="java.lang.Object" jdbcType="LONG"/>
+            <columnOverride column="data_ins" isGeneratedAlways="True"/>
+            <columnOverride column="data_mod" isGeneratedAlways="True"/>
+            <ignoreColumn column="data_ins"/>
+            <ignoreColumn column="data_mod"/>
         </table>
 
     </context>
