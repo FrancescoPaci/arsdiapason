@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core'
-import { Workbook } from 'exceljs'
+import {Injectable} from '@angular/core'
 import * as fs from 'file-saver'
 import * as Excel from 'exceljs/dist/exceljs.min.js'
 

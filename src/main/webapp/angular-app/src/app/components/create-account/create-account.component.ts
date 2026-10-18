@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import { HttpService } from '../../services/http.service'
-import { MemoService } from '../../services/memo.service'
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router'
+import {HttpService} from '../../services/http.service'
+import {MemoService} from '../../services/memo.service'
 
 @Component({
     selector: 'app-create-account',

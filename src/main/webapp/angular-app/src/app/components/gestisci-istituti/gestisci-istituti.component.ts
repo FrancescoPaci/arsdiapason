@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { FormBuilder, Validators } from '@angular/forms'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {FormBuilder, Validators} from '@angular/forms'
 import * as _ from 'lodash'
 
 @Component({

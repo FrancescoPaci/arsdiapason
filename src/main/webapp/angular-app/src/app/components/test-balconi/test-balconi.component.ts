@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { ActivatedRoute, Router } from '@angular/router'
-import { saveAs } from 'file-saver'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {ActivatedRoute, Router} from '@angular/router'
+import {saveAs} from 'file-saver'
 import * as _ from 'lodash'
 
 @Component({

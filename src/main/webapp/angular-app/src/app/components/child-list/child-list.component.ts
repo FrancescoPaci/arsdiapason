@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
-import { HttpService } from '../../services/http.service'
+import {Component, OnInit} from '@angular/core'
+import {Router} from '@angular/router'
+import {HttpService} from '../../services/http.service'
 import * as _ from 'lodash'
 
 @Component({

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { BsModalService } from 'ngx-bootstrap/modal'
-import { AlertModalComponent } from '../alert-modal/alert-modal.component'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {BsModalService} from 'ngx-bootstrap/modal'
+import {AlertModalComponent} from '../alert-modal/alert-modal.component'
 import * as moment from 'moment'
 
 @Component({

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core'
-import { HttpService } from './services/http.service'
-import { Router, NavigationEnd } from '@angular/router'
+import {Component} from '@angular/core'
+import {HttpService} from './services/http.service'
+import {NavigationEnd, Router} from '@angular/router'
 
 @Component({
     selector: 'app-root',

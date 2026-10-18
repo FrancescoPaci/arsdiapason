@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { MemoService } from '../../services/memo.service'
-import { Router } from '@angular/router'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {MemoService} from '../../services/memo.service'
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-mail-reset-password',

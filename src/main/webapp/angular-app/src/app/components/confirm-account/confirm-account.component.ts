@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { ActivatedRoute, Router } from '@angular/router'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {ActivatedRoute, Router} from '@angular/router'
 
 @Component({
     selector: 'app-confirm-account',

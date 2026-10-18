@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
-import { ActivatedRoute, Router } from '@angular/router'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
+import {ActivatedRoute} from '@angular/router'
 import * as _ from 'lodash'
 import * as moment from 'moment'
 

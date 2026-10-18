@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from '../../services/http.service'
+import {Component, OnInit} from '@angular/core'
+import {HttpService} from '../../services/http.service'
 import * as $ from 'jquery'
 import * as _ from 'lodash'
-import { fromEvent } from 'rxjs'
-import { debounceTime } from 'rxjs/operators'
+import {fromEvent} from 'rxjs'
+import {debounceTime} from 'rxjs/operators'
 
 @Component({
    selector: 'app-pagina-grafici',

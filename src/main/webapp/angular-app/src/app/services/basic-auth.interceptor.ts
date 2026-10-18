@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core'
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http'
-import { AlertModalComponent } from '../components/alert-modal/alert-modal.component'
-import { Observable } from 'rxjs'
-import { catchError, finalize  } from 'rxjs/operators'
-import { BsModalService } from 'ngx-bootstrap/modal'
-import { Router } from '@angular/router'
-import { NgxSpinnerService } from 'ngx-spinner'
+import {Injectable} from '@angular/core'
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http'
+import {AlertModalComponent} from '../components/alert-modal/alert-modal.component'
+import {Observable} from 'rxjs'
+import {catchError, finalize} from 'rxjs/operators'
+import {BsModalService} from 'ngx-bootstrap/modal'
+import {Router} from '@angular/router'
+import {NgxSpinnerService} from 'ngx-spinner'
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
