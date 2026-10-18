@@ -6,7 +6,7 @@ INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (3, 'Figure lac
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (4, 'Somiglianze e differenze', 'Mettere una crocetta sulla figura diversa', 'A');
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (5, 'Disegni  da completare', 'Completare i disegni', 'A');
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (6, 'Cubi da completare', 'Completare le figure', 'A');
-INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (7, 'Assurdità', 'Mettere una crocetta su ciò che non centra con l\'insieme del disegno', 'A');
+INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (7, 'Assurdità', 'Mettere una crocetta su ciò che non centra con l''insieme del disegno', 'A');
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (8, 'Facce', 'Disegnare parti mancanti', 'A');
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (9, 'Labirinti', 'Tirare una riga nel binario più corto dal bambino alla casetta', 'A;B;C');
 INSERT INTO scheda (numero, titolo, obbiettivo, immagini) VALUES (10, 'Omino', 'Disegnare elementi mancanti', 'A');

@@ -27,8 +27,8 @@ public class UserService {
     @Transactional(readOnly = true)
     public Utente login(String email, String password) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(email);
-        if(BCrypt.checkpw(password, utente.getPassword())){
-            if(!utente.getActive()){
+        if (BCrypt.checkpw(password, utente.getPassword())) {
+            if (!utente.getActive()) {
                 throw new Exception("", new Throwable("Utente non attivo, controllare la mail per completare la registrazione"));
             }
             return utente;
@@ -42,7 +42,7 @@ public class UserService {
         Pattern pattern = Pattern.compile(regexPassword);
         Matcher matcher = pattern.matcher(datiUtente.getPassword());
         int temporaryCode = ThreadLocalRandom.current().nextInt(100000, 1000000);
-        if(matcher.find()) {
+        if (matcher.find()) {
             Psicologo psicologo = new Psicologo();
             psicologo.setNome(datiUtente.getNome());
             psicologo.setCognome(datiUtente.getCognome());
@@ -53,17 +53,18 @@ public class UserService {
             utente.setEmail(datiUtente.getEmail());
             utente.setPassword(BCrypt.hashpw(datiUtente.getPassword(), BCrypt.gensalt()));
             utente.setRole("PSICOLOGO");
+            utente.setActive(true);//questo per farlo funzionare anche senza mail
             utenteMapper.insertSelective(utente);
         } else {
             throw new Exception("", new Throwable("La password non rispetta i requisiti richiesti"));
         }
-        mailService.sendAuthenticationEmail(datiUtente, temporaryCode);
+        //mailService.sendAuthenticationEmail(datiUtente, temporaryCode);
     }
 
     public Utente confirmAccount(DatiUtente confirmAccount) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(confirmAccount.getEmail());
-        if(!BCrypt.checkpw(confirmAccount.getPassword(), utente.getPassword())
-                || confirmAccount.getTemporaryCode() != utente.getTemporaryCode()){
+        if (!BCrypt.checkpw(confirmAccount.getPassword(), utente.getPassword())
+                || confirmAccount.getTemporaryCode() != utente.getTemporaryCode()) {
             throw new Exception("", new Throwable("Dati non corretti"));
         }
         utente.setActive(true);
@@ -74,21 +75,21 @@ public class UserService {
 
     public void sendResetPasswordEmail(DatiUtente datiUtente) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(datiUtente.getEmail());
-        if(utente != null) {
+        if (utente != null) {
             int temporaryCode = ThreadLocalRandom.current().nextInt(100000, 1000000);
             utente.setTemporaryCode(temporaryCode);
             utenteMapper.updateByPrimaryKey(utente);
             mailService.sendResetPasswordEmail(datiUtente, temporaryCode);
-        } else if(utente == null) {
+        } else if (utente == null) {
             throw new Exception("", new Throwable("Mail non presente a sistema, è necessario registrarsi"));
-        } else if(utente.getActive()) {
+        } else if (utente.getActive()) {
             throw new Exception("", new Throwable("Utente non attivo, controllare la mail per attivare l'utenza"));
         }
     }
 
     public Utente resetPassword(DatiUtente datiUtente) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(datiUtente.getEmail());
-        if(utente == null || datiUtente.getTemporaryCode() != utente.getTemporaryCode()){
+        if (utente == null || datiUtente.getTemporaryCode() != utente.getTemporaryCode()) {
             throw new Exception("", new Throwable("Dati non corretti"));
         }
         utente.setActive(true);

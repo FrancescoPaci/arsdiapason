@@ -35,3 +35,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### H2 ###
+/data/
+
+### Angular ###
+/node_modules/**
