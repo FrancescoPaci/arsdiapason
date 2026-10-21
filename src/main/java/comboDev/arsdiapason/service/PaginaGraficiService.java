@@ -1,10 +1,8 @@
 package comboDev.arsdiapason.service;
 
+import comboDev.arsdiapason.dto.BambinoDto;
 import comboDev.arsdiapason.dto.ResultChildTest;
-import comboDev.arsdiapason.mybatis.mapper.BambinoMapper;
-import comboDev.arsdiapason.mybatis.mapper.ProvaSchedaMapper;
-import comboDev.arsdiapason.mybatis.mapper.RelBambinoSchedaMapper;
-import comboDev.arsdiapason.mybatis.mapper.RelPsicologoBambinoMapper;
+import comboDev.arsdiapason.mybatis.mapper.*;
 import comboDev.arsdiapason.mybatis.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,8 @@ public class PaginaGraficiService {
     private BambinoMapper bambinoMapper;
     @Autowired
     private RelPsicologoBambinoMapper relPsicologoBambinoMapper;
+    @Autowired
+    private RelIstitutoBambinoMapper relIstitutoBambinoMapper;
     @Autowired
     private RelBambinoSchedaMapper relBambinoSchedaMapper;
     @Autowired
@@ -44,6 +44,12 @@ public class PaginaGraficiService {
             if (bambini.size() == 1) {
                 Bambino bambino = bambini.get(0);
 
+                RelIstitutoBambinoExample relIstitutoBambinoExample = new RelIstitutoBambinoExample();
+                relIstitutoBambinoExample.createCriteria().andIdBambinoEqualTo(bambino.getId());
+                List<RelIstitutoBambino> relIstitutoBambino = relIstitutoBambinoMapper.selectByExample(relIstitutoBambinoExample);
+                RelIstitutoBambino relIB = relIstitutoBambino.get(0);
+                BambinoDto bambinoDto = BambinoDto.fromEntity(bambino, relIB.getIdIstituto(), relIB.getClasse(), relIB.getSezione());
+
                 RelBambinoSchedaExample relBambinoSchedaExample = new RelBambinoSchedaExample();
                 relBambinoSchedaExample.createCriteria().andIdBambinoEqualTo(bambino.getId());
                 List<RelBambinoScheda> relBambinoSchedaList = relBambinoSchedaMapper.selectByExample(relBambinoSchedaExample);
@@ -55,9 +61,9 @@ public class PaginaGraficiService {
                         provaSchedas.add(provaSchedaMapper.selectByPrimaryKey(relBambinoScheda.getIdProvaScheda()));
                     }
                 }
-                if (provaSchedas.size() > 0) {
+                if (!provaSchedas.isEmpty()) {
                     resultChildTest.setProveSchede(provaSchedas);
-                    resultChildTest.setBambino(bambino);
+                    resultChildTest.setBambino(bambinoDto);
                     resultChildTests.add(resultChildTest);
                 }
             }

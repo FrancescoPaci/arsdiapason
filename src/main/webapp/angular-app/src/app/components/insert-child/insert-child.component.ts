@@ -23,6 +23,7 @@ export class InsertChildComponent implements OnInit {
     today: string = moment().format('YYYY-MM-DD')
     istituti: any = []
     sezioni: any = []
+    classi: any = []
     textAreaMaxLength: number = 300
 
     getListaIstituti() {
@@ -46,12 +47,13 @@ export class InsertChildComponent implements OnInit {
         )
     }
 
-    findSezioni() {
+    findInstitutoDetails() {
         if (this.newChild.idIstituto && this.newChild.idIstituto != 1) {
-            let url = 'findSezioni?idIstituto=' + this.newChild.idIstituto
+            let url = 'findInstitutoDetails?idIstituto=' + this.newChild.idIstituto
             this.httpService.callPost(url, null).subscribe(
                 (data: any) => {
-                    this.sezioni = data
+                    this.sezioni = data.sezioni
+                    this.classi = data.classi
                 },
                 (error: any) => { },
                 () => { }

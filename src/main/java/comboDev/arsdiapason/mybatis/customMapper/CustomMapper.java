@@ -9,6 +9,9 @@ import java.util.List;
 @Mapper
 public interface CustomMapper {
 
-    @Select("SELECT DISTINCT sezione FROM bambino WHERE id_istituto = #{id}")
+    @Select("SELECT DISTINCT classe FROM rel_istituto_bambino WHERE id_istituto = #{id}")
+    List<Integer> findClassi(@Param("id") Integer idIstituto);
+
+    @Select("SELECT DISTINCT sezione FROM rel_istituto_bambino WHERE id_istituto = #{id}")
     List<String> findSezioni(@Param("id") Integer idIstituto);
 }
