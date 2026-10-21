@@ -28,7 +28,7 @@ public class UserService {
     public Utente login(String email, String password) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(email);
         if (BCrypt.checkpw(password, utente.getPassword())) {
-            if (!utente.getActive()) {
+            if (Boolean.FALSE.equals(utente.getActive())) {
                 throw new Exception("", new Throwable("Utente non attivo, controllare la mail per completare la registrazione"));
             }
             return utente;
@@ -76,18 +76,19 @@ public class UserService {
     public void sendResetPasswordEmail(DatiUtente datiUtente) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(datiUtente.getEmail());
         if (utente != null) {
+            if (Boolean.FALSE.equals(utente.getActive())) {
+                throw new Exception("", new Throwable("Utente non attivo, controllare la mail per attivare l'utenza"));
+            }
             int temporaryCode = ThreadLocalRandom.current().nextInt(100000, 1000000);
             utente.setTemporaryCode(temporaryCode);
             utenteMapper.updateByPrimaryKey(utente);
             mailService.sendResetPasswordEmail(datiUtente, temporaryCode);
-        } else if (utente == null) {
+        } else {
             throw new Exception("", new Throwable("Mail non presente a sistema, è necessario registrarsi"));
-        } else if (utente.getActive()) {
-            throw new Exception("", new Throwable("Utente non attivo, controllare la mail per attivare l'utenza"));
         }
     }
 
-    public Utente resetPassword(DatiUtente datiUtente) throws Exception {
+    public void resetPassword(DatiUtente datiUtente) throws Exception {
         Utente utente = utenteMapper.selectByPrimaryKey(datiUtente.getEmail());
         if (utente == null || datiUtente.getTemporaryCode() != utente.getTemporaryCode()) {
             throw new Exception("", new Throwable("Dati non corretti"));
@@ -96,7 +97,6 @@ public class UserService {
         utente.setPassword(BCrypt.hashpw(datiUtente.getPassword(), BCrypt.gensalt()));
         utente.setTemporaryCode(null);
         utenteMapper.updateByPrimaryKey(utente);
-        return utente;
     }
 
 }
