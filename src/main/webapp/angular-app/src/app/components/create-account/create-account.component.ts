@@ -39,6 +39,7 @@ export class CreateAccountComponent implements OnInit {
             (data: any) => {
                 this.errMsg = ''
                 this.showSuccessMsg = true
+                this.goToLogin();
             },
             (error: any) => {
                 this.errMsg = "Errore in fase di registrazione"
