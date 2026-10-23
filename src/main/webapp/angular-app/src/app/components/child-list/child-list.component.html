@@ -1,5 +1,5 @@
 <div class="row align-items-end mb-2">
-  <div *ngFor="let combo of searchCombos" class="col-2">
+  <div *ngFor="let combo of searchCombos" class="{{getColSpan(combo)}}">
     <label class="font-weight-bold">{{combo | capitalize}}</label>
     <select class="custom-select custom-select-sm" name="{{combo}}" [(ngModel)]="searchModels[combo]"
       (ngModelChange)="findByCombo(combo)" [disabled]="comboDisabled(combo)">
@@ -30,6 +30,7 @@
           <th>Età</th>
           <th>Sesso</th>
           <th>Istituto</th>
+          <th>Classe</th>
           <th>Sezione</th>
           <th>Data Test</th>
           <th>Test Effettuato</th>
@@ -46,6 +47,7 @@
             <td>{{child.dataNascita | eta}}</td>
             <td>{{child.sesso | sesso}}</td>
             <td>{{getNomeIstituto(child.idIstituto)}}</td>
+            <td>{{child.classe || 'N.P.'}}</td>
             <td>{{child.sezione || 'N.P.'}}</td>
             <td>{{child.dataTest ? (child.dataTest | date: 'dd MMM yyyy') : 'N.P.'}}</td>
             <td>{{child.testFinito | testFinito}}</td>

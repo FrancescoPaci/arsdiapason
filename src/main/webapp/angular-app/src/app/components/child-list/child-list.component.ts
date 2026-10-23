@@ -14,9 +14,9 @@ export class ChildListComponent implements OnInit {
     listaBambiniOrigin: any = []
     listaBambini: any = []
     listaBambiniSearch: any = null
-    searchCombos: any = ['regione', 'provincia', 'comune', 'istituto', 'sezione']
-    searchLists: any = { regione: [], provincia: [], comune: [], istituto: [], sezione: [] }
-    searchModels: any = { regione: {}, provincia: {}, comune: {}, istituto: {}, sezione: {} }
+    searchCombos: any = ['regione', 'provincia', 'comune', 'istituto', 'classe', 'sezione']
+    searchLists: any = { regione: [], provincia: [], comune: [], istituto: [], classe: [], sezione: [] }
+    searchModels: any = { regione: {}, provincia: {}, comune: {}, istituto: {}, classe: {}, sezione: {} }
     searchCognome: string
 
     constructor(private httpService: HttpService, private router: Router) { }
@@ -32,6 +32,7 @@ export class ChildListComponent implements OnInit {
                 this.listaBambini = data
                 this.listaBambiniOrigin = data
                 this.searchLists.sezione = this.initComboSezione(this.listaBambini)
+                this.searchLists.classe = this.initComboClasse(this.listaBambini)
             },
             (error: any) => { },
             () => { }
@@ -80,25 +81,37 @@ export class ChildListComponent implements OnInit {
         this.searchLists.comune = _(this.istitutiOrigin).groupBy('comune').keys().value()
     }
 
+    initComboClasse(listaBambini: any) {
+      return _(listaBambini).filter(function (o) { return o.classe !== null }).groupBy('classe').keys().value()
+    }
+
     initComboSezione(listaBambini: any) {
         return _(listaBambini).filter(function (o) { return o.sezione !== null }).groupBy('sezione').keys().value()
     }
 
     resetCombos() {
-        this.searchModels = { regione: {}, provincia: {}, comune: {}, istituto: {}, sezione: {} }
+        this.searchModels = { regione: {}, provincia: {}, comune: {}, istituto: {}, classe: {}, sezione: {} }
         this.listaBambini = this.listaBambiniOrigin
         this.initCombos()
+        this.searchLists.classe = this.initComboClasse(this.listaBambini)
         this.searchLists.sezione = this.initComboSezione(this.listaBambini)
     }
 
     findByCombo(combo: string) {
-        if (combo === 'sezione') {
-            let listaBambini = _(this.listaBambini).filter(['sezione', this.searchModels.sezione])
+        if (combo === 'classe') {
+            let listaBambini = _(this.listaBambini).filter(b => b.classe == this.searchModels.classe).value();
             let idIstituti = _(listaBambini).groupBy('idIstituto').keys().value()
-            this.searchLists.sezione = this.initComboSezione(listaBambini)
+            this.searchLists.classe = this.initComboClasse(listaBambini)
             for (let i = 0; i < idIstituti.length; i++) {
                 this.searchLists.istituto = _.filter(this.istitutiOrigin, ['id', parseInt(idIstituti[i])])
             }
+        } else if (combo === 'sezione') {
+          let listaBambini = _(this.listaBambini).filter(['sezione', this.searchModels.sezione])
+          let idIstituti = _(listaBambini).groupBy('idIstituto').keys().value()
+          this.searchLists.sezione = this.initComboSezione(listaBambini)
+          for (let i = 0; i < idIstituti.length; i++) {
+            this.searchLists.istituto = _.filter(this.istitutiOrigin, ['id', parseInt(idIstituti[i])])
+          }
         } else if (combo === 'istituto') {
             this.searchLists.istituto = [this.searchModels[combo]]
         } else {
@@ -109,16 +122,28 @@ export class ChildListComponent implements OnInit {
         this.searchLists.comune = _(this.searchLists.istituto).groupBy('comune').keys().value()
         this.listaBambini = []
         for (let i = 0; i < this.searchLists.istituto.length; i++) {
-            if (_.isEmpty(this.searchModels.sezione)) {
-                this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, { 'idIstituto': this.searchLists.istituto[i].id }))
-            } else {
-                this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, { 'idIstituto': this.searchLists.istituto[i].id, 'sezione': this.searchModels.sezione }))
-            }
+          if (!_.isEmpty(this.searchModels.classe) && !_.isEmpty(this.searchModels.sezione)) {
+            this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, b =>
+              b.idIstituto == this.searchLists.istituto[i].id
+              && b.classe == this.searchModels.classe
+              && b.sezione == this.searchModels.sezione
+            ))
+          } else if (!_.isEmpty(this.searchModels.classe)) {
+            this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, b =>
+              b.idIstituto == this.searchLists.istituto[i].id && b.classe == this.searchModels.classe
+            ))
+          } else if (!_.isEmpty(this.searchModels.sezione)) {
+            this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, { 'idIstituto': this.searchLists.istituto[i].id, 'sezione': this.searchModels.sezione }))
+          } else {
+            this.listaBambini = this.listaBambini.concat(_.filter(this.listaBambiniOrigin, { 'idIstituto': this.searchLists.istituto[i].id }))
+          }
         }
-        if (combo !== 'sezione') {
-            this.searchLists.sezione = this.initComboSezione(this.listaBambini)
-            this.searchModels.sezione = this.searchLists.sezione.length === 1 ? this.searchLists.sezione[0] : {}
-        }
+
+        this.searchLists.classe = this.initComboClasse(this.listaBambini)
+        this.searchModels.classe = this.searchLists.classe.length === 1 ? this.searchLists.classe[0] : {}
+        this.searchLists.sezione = this.initComboSezione(this.listaBambini)
+        this.searchModels.sezione = this.searchLists.sezione.length === 1 ? this.searchLists.sezione[0] : {}
+
         this.searchModels.regione = this.searchLists.regione.length === 1 ? this.searchLists.regione[0] : {}
         this.searchModels.provincia = this.searchLists.provincia.length === 1 ? this.searchLists.provincia[0] : {}
         this.searchModels.comune = this.searchLists.comune.length === 1 ? this.searchLists.comune[0] : {}
@@ -126,7 +151,11 @@ export class ChildListComponent implements OnInit {
     }
 
     comboDisabled(combo: string) {
-        return combo === 'sezione' ? _.isEmpty(this.searchModels.istituto) || !this.searchLists[combo].length : !this.searchLists[combo].length
+        return combo === 'sezione' || combo === 'classe' ? _.isEmpty(this.searchModels.istituto) || !this.searchLists[combo].length : !this.searchLists[combo].length
+    }
+
+    getColSpan(combo: string) {
+      return combo === 'sezione' || combo === 'classe' ? 'col-1' : 'col-2'
     }
 
 }
